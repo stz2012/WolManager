@@ -1,0 +1,29 @@
+@charset "UTF-8";
+/* 共通スタイル */
+/* common.css */
+
+#info_dialog .ui-header a {
+	display: none;
+}
+
+#err_dialog .ui-header a {
+	display: none;
+}
+
+#confirm_dialog .ui-header a {
+	display: none;
+}
+
+#input_dialog .ui-header a {
+	display: none;
+}
+
+.ui-header .ui-title, 
+.ui-footer .ui-title,
+.ui-btn-inner,
+.ui-li-heading,
+.ui-li .ui-btn-text a.ui-link-inherit,
+.ui-li-desc {
+	overflow: visible;
+	white-space: normal;
+}

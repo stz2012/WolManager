@@ -1,0 +1,58 @@
+{include file='page_header.tpl'}
+<div id="home" data-role="page" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1>WOL Manager</h1>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<form name="form1" method="post">
+		<fieldset>
+			<div class="ui-field-contain">
+				<label for="login_name">ログイン名:</label>
+				<input type="text" name="login_name" id="login_name" value="" />
+			</div>
+			<div class="ui-field-contain">
+				<label for="passwd">パスワード:</label>
+				<input type="password" name="passwd" id="passwd" value="" />
+			</div>
+			<input type="submit" name="btn_action" value="ログイン" />
+		</fieldset>
+		</form>
+	</div>
+	<div data-role="footer" data-theme="{$smarty.const.JQM_DATA_THEME}">
+{include file='page_copyright.tpl'}
+	</div>
+</div>
+<div id="info_dialog" data-role="dialog" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1 id="info_dlog_title">メッセージ</h1>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<p id="info_dlog_content">{$inform_msg}</p>
+		<a data-role="button" href="{$inform_link|default:'#home'}">O K</a>
+	</div>
+</div>
+<div id="err_dialog" data-role="dialog" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1 id="err_dlog_title">エラー</h1>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<p id="err_dlog_content">{$error_msg}</p>
+		<a data-role="button" href="{$error_link|default:'#home'}">O K</a>
+	</div>
+</div>
+<script type="text/javascript">
+{literal}
+window.onload = function() {
+	if ($('#info_dlog_content').text() != "")
+	{
+		$.mobile.changePage('#info_dialog', {transition: 'pop'});
+	}
+	if ($('#err_dlog_content').text() != "")
+	{
+		$.mobile.changePage('#err_dialog', {transition: 'pop'});
+	}
+	$('div.ui-page').removeClass('ui-dialog');
+}
+{/literal}
+</script>
+{include file='page_footer.tpl'}

@@ -1,0 +1,112 @@
+{include file='page_header.tpl'}
+<div id="home" data-role="page" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1>メインメニュー<br />（ログイン中：{$sess_data.user_name}）</h1>
+		<a href="#popup_menu" data-rel="popup" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-gear" data-transition="pop">設定</a>
+		<div id="popup_menu" data-role="popup">
+			<ul data-role="listview" data-inset="true">
+				<li><a href="userlist.php">ユーザ情報管理</a></li>
+				<li><a href="{$smarty.server.SCRIPT_NAME}?{$update_param}">ベンダー情報更新</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<div data-role="collapsible-set">
+			<div data-role="collapsible" data-collapsed="false">
+				<h3>登録済デバイス</h3>
+				<ul data-role="listview" data-inset="true" data-split-icon="delete">
+{foreach from=$res_data1 item=value}
+					<li>
+						<a href="{$smarty.server.SCRIPT_NAME}?{$value.confirm_param}">
+							<h2>{$value.device_name}</h2>
+							<p>ベンダー名：{$value.vendor_name}</p>
+							<p class="ui-li-aside">MACアドレス：{$value.mac_addr}</p>
+						</a>
+						<a href="{$smarty.server.SCRIPT_NAME}?{$value.delete_param}"></a>
+					</li>
+{/foreach}
+					<li>
+				</ul>
+			</div>
+			<div data-role="collapsible">
+				<h3>未登録デバイス</h3>
+				<ul data-role="listview" data-inset="true" data-split-icon="plus">
+{foreach from=$res_data2 item=value}
+					<li>
+						<a href="{$smarty.server.SCRIPT_NAME}?{$value.confirm_param}">
+							<h2>IPアドレス：{$value.ip_addr}</h2>
+							<p>ベンダー名：{$value.vendor_name}</p>
+							<p class="ui-li-aside">MACアドレス：{$value.mac_addr}</p>
+						</a>
+						<a href="{$smarty.server.SCRIPT_NAME}?{$value.append_param}"></a>
+					</li>
+{/foreach}
+				</ul>
+			</div>
+		</div>
+		<form method="post" action="index.php">
+		<fieldset>
+			<input type="submit" name="btn_action" value="ログアウト" />
+		</fieldset>
+		</form>
+	</div>
+	<div data-role="footer" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		{include file='page_copyright.tpl'}
+	</div>
+</div>
+<div id="confirm_dialog" data-role="dialog" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1 id="confirm_dlog_title">確　認</h1>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<p id="confirm_dlog_content">{$confirm_msg|default:''}</p>
+		<fieldset class="ui-grid-a">
+			<div class="ui-block-a"><a href="{$smarty.server.SCRIPT_NAME}?{$confirm_param|default:''}" data-role="button">実　行</a></div>
+			<div class="ui-block-b"><a href="{$smarty.server.SCRIPT_NAME}" data-role="button">キャンセル</a></div>
+		</fieldset>
+	</div>
+</div>
+<div id="input_dialog" data-role="dialog" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1 id="input_dlog_title">デバイス登録</h1>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<p id="input_dlog_content">{$input_msg|default:''}</p>
+		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param}">
+			<input type="text" name="device_name" value="" />
+			<fieldset class="ui-grid-a">
+				<div class="ui-block-a"><input type="submit" value="登　録" /></div>
+				<div class="ui-block-b"><a href="{$smarty.server.SCRIPT_NAME}" data-role="button">キャンセル</a></div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<div id="inform_dialog" data-role="dialog" data-theme="{$smarty.const.JQM_DATA_THEME}">
+	<div data-role="header" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<h1 id="info_dlog_title">結　果</h1>
+	</div>
+	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
+		<p id="inform_dlog_content">{$inform_msg|default:''}</p>
+		<a data-role="button" href="{$smarty.server.SCRIPT_NAME}">O K</a>
+	</div>
+</div>
+<script type="text/javascript">
+{literal}
+window.onload = function() {
+	if ($('#confirm_dlog_content').text() != "")
+	{
+		$.mobile.pageContainer.pagecontainer('change', '#confirm_dialog', {transition: 'pop'});
+	}
+	if ($('#input_dlog_content').text() != "")
+	{
+		$.mobile.pageContainer.pagecontainer('change', '#input_dialog', {transition: 'pop'});
+	}
+	if ($('#inform_dlog_content').text() != "")
+	{
+		$.mobile.pageContainer.pagecontainer('change', '#inform_dialog', {transition: 'pop'});
+	}
+	$('div.ui-page').removeClass('ui-dialog');
+};
+{/literal}
+</script>
+{include file='page_footer.tpl'}
