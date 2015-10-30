@@ -136,21 +136,23 @@ SQL_TEXT;
 	/**
 	 * ユーザ情報を取得
 	 * @param string $user_name ユーザ名
-	 * @return mixed
+	 * @return string
 	 */
 	public static function getUserInfo($user_name)
 	{
-		$retval = array();
+		$retval = '';
 
 		try
 		{
 			$db_obj = new self();
-			$sql = "SELECT * FROM wol_user";
+			$sql = "SELECT sid FROM wol_user";
 			$sql .= " WHERE user_name = ?";
 			$stmt = $db_obj->db->prepare($sql);
 			$stmt->bindValue(1, $user_name);
 			$stmt->execute();
-			$retval = $stmt->fetch(PDO::FETCH_ASSOC);
+			$result = $stmt->fetchColumn();
+			if ($result !== false)
+				$retval = $result;
 			$stmt->closeCursor();
 		}
 		catch (PDOException $e)
@@ -163,7 +165,7 @@ SQL_TEXT;
 
 	/**
 	 * ユーザ一覧を取得
-	 * @return mixed
+	 * @return array
 	 */
 	public static function getUserList()
 	{
@@ -196,7 +198,7 @@ SQL_TEXT;
 	/**
 	 * ユーザ情報を追加
 	 * @param string $user_name ユーザ名
-	 * @param string $user_pass ユーザパス
+	 * @param string $user_pass ユーザパスワード
 	 * @return bool
 	 */
 	public static function addUserInfo($user_name, $user_pass)
@@ -226,7 +228,7 @@ SQL_TEXT;
 
 	/**
 	 * ユーザ情報を削除
-	 * @param string $sid ユーザID
+	 * @param string $sid システムID
 	 * @return bool
 	 */
 	public static function delUserInfo($sid)
@@ -254,7 +256,7 @@ SQL_TEXT;
 
 	/**
 	 * デバイス一覧を取得
-	 * @return mixed
+	 * @return array
 	 */
 	public static function getDeviceList()
 	{
@@ -374,6 +376,7 @@ SQL_TEXT;
 
 	/**
 	 * ベンダー情報を更新
+	 * @return bool
 	 */
 	public static function updateVendorInfo($is_download = false)
 	{

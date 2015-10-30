@@ -72,7 +72,7 @@
 	</div>
 	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
 		<p id="input_dlog_content">{$input_msg|default:''}</p>
-		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param}">
+		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param|default:''}">
 			<input type="text" name="device_name" value="" />
 			<fieldset class="ui-grid-a">
 				<div class="ui-block-a"><input type="submit" value="登　録" /></div>

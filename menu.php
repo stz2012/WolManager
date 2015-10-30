@@ -36,16 +36,15 @@
 					else
 						$device_name = $DEV_LIST[$GET_DATA['mac_addr']];
 					UtilLog::writeLog('WOLパケットを送信 Name:'.$device_name.' MAC:'.$GET_DATA['mac_addr'], 'ACCESS');
-					$status = WakeOnLan(WAKE_IP, $GET_DATA['mac_addr']);
-					if ( $status === TRUE )
-						$SMARTY->assign('inform_msg', "「{$device_name}」の起動に成功しました。");
-					else
+					if (!WakeOnLan(WAKE_IP, $GET_DATA['mac_addr']))
 						$SMARTY->assign('inform_msg', "「{$device_name}」の起動に失敗しました。");
+					else
+						$SMARTY->assign('inform_msg', "「{$device_name}」の起動に成功しました。");
 					break;
 
 				// 追加フォーム
 				case 'append_form':
-					$SMARTY->assign('input_msg', "デバイス名を入力してください。");
+					$SMARTY->assign('input_msg', 'デバイス名を入力してください。');
 					$param = array();
 					$param['mode'] = 'append';
 					$param['mac_addr'] = $GET_DATA['mac_addr'];
@@ -57,12 +56,13 @@
 					if (isset($POST_DATA['device_name']) && $POST_DATA['device_name'] != '')
 					{
 						$device_name = $POST_DATA['device_name'];
-						$status = UtilSQLite::addDeviceInfo($GET_DATA['mac_addr'], $device_name);
-						if ( $status === TRUE )
-							$SMARTY->assign('inform_msg', "「{$device_name}」の登録に成功しました。");
-						else
+						if (!UtilSQLite::addDeviceInfo($GET_DATA['mac_addr'], $device_name))
 							$SMARTY->assign('inform_msg', "「{$device_name}」の登録に失敗しました。");
+						else
+							$SMARTY->assign('inform_msg', "「{$device_name}」の登録に成功しました。");
 					}
+					else
+						$SMARTY->assign('inform_msg', 'デバイス情報を正しく設定してください。');
 					break;
 
 				// 削除確認
@@ -78,20 +78,18 @@
 				// デバイス削除
 				case 'delete':
 					$device_name = $DEV_LIST[$GET_DATA['mac_addr']];
-					$status = UtilSQLite::delDeviceInfo($GET_DATA['mac_addr']);
-					if ( $status === TRUE )
-						$SMARTY->assign('inform_msg', "「{$device_name}」の削除に成功しました。");
-					else
+					if (!UtilSQLite::delDeviceInfo($GET_DATA['mac_addr']))
 						$SMARTY->assign('inform_msg', "「{$device_name}」の削除に失敗しました。");
+					else
+						$SMARTY->assign('inform_msg', "「{$device_name}」の削除に成功しました。");
 					break;
 
 				// ベンダー情報更新
 				case 'update_vendor':
-					$status = UtilSQLite::updateVendorInfo(true);
-					if ( $status === TRUE )
-						$SMARTY->assign('inform_msg', "ベンダー情報の更新に成功しました。");
+					if (!UtilSQLite::updateVendorInfo(true))
+						$SMARTY->assign('inform_msg', 'ベンダー情報の更新に失敗しました。');
 					else
-						$SMARTY->assign('inform_msg', "ベンダー情報の更新に失敗しました。");
+						$SMARTY->assign('inform_msg', 'ベンダー情報の更新に成功しました。');
 					break;
 			}
 		}
@@ -144,10 +142,9 @@
 		$SMARTY->assign('res_data1',    $res_data1);
 		$SMARTY->assign('res_data2',    $res_data2);
 		$SMARTY->assign('sess_data',    $SESS_DATA);
-		$SMARTY->assign('update_param', UtilString::buildQueryString(array(
-			'mode'     => 'update_vendor',
-			'mac_addr' => 'dummy'
-		)));
+		$SMARTY->assign('update_param', UtilString::buildQueryString(
+			array('mode' => 'update_vendor', 'mac_addr' => 'dummy')
+		));
 		$SMARTY->display('menu.html');
 	}
 	else

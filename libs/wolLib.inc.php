@@ -30,9 +30,13 @@ function GetArpInfo()
 	return $res_data;
 }
 
-function isIgnoreAddress($ip)
+/**
+ * 無視するIPアドレスかどうか
+ * @param $ip_addr String - IPアドレス文字列
+ * @return bool - 処理結果
+ */
+function isIgnoreAddress($ip_addr)
 {
-	//Private ranges...
 	$networks = array(
 		'127.0.0.0'       =>  '255.0.0.0',        //Loopback.
 		'169.254.0.0'     =>  '255.255.0.0',      //Link-local.
@@ -41,11 +45,9 @@ function isIgnoreAddress($ip)
 		'0.0.0.0'         =>  '255.0.0.0'         //Reserved.
 	);
 
-	//inet_pton.
-	$ip = @inet_pton($ip);
+	$ip = @inet_pton($ip_addr);
 	if (strlen($ip) !== 4) { return false; }
 
-	//Is the IP in a private range?
 	foreach($networks as $network_address => $network_mask)
 	{
 		$network_address   = inet_pton($network_address);
@@ -61,7 +63,7 @@ function isIgnoreAddress($ip)
  * WOL関数
  * @param $addr String - 送出先ネットワークアドレス
  * @param $mac  String - 送出先MACアドレス
- * @return bool/String - 処理結果
+ * @return bool - 処理結果
  */
 function WakeOnLan($addr, $mac)
 {
@@ -80,24 +82,23 @@ function WakeOnLan($addr, $mac)
 	$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 	if ($sock == false)
 	{
-		return "Error creating socket!\nError code is '".socket_last_error($sock)."' - " . socket_strerror(socket_last_erro($sock));
+		return false;
 	}
 	else
 	{
-		// setting a broadcast option to socket:
-		$opt_ret = socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, TRUE);
-		if($opt_ret < 0)
+		$opt_ret = socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, true);
+		if ($opt_ret < 0)
 		{
 			socket_close($sock);
-			return "setsockopt() failed, error: " . strerror($opt_ret) . "\n";
+			return false;
 		}
-		if(socket_sendto($sock, $msg, strlen($msg), 0, $addr, 2304) === FALSE)
+		if (socket_sendto($sock, $msg, strlen($msg), 0, $addr, 2304) === false)
 		{
 			socket_close($sock);
-			return "Magic packet failed!";
+			return false;
 		}
 		socket_close($sock);
-		return TRUE;
+		return true;
 	}
 }
 ?>

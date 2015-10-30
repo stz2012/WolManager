@@ -2,8 +2,6 @@
 	/**
 	 * WOL Manager - 個別設定
 	 */
-	// エラー出力範囲
-	error_reporting(E_ALL ^ E_STRICT);
 	 // インストールパス
 	define('INSTALL_PATH', dirname(__FILE__));
 	// 出力ファイルパス
@@ -12,6 +10,12 @@
 	define('DB_FILEPATH', dirname(INSTALL_PATH).'/db/wol.db');
 	// ログファイルパス
 	define('LOG_FILEPATH', dirname(INSTALL_PATH).'/log/');
+	// PHPエラー出力範囲設定
+	error_reporting(E_ALL ^ E_STRICT);
+	// PHPエラーのログ出力を有効化
+	ini_set('log_errors', 1);
+	// PHPエラーログ出力パス
+	ini_set('error_log', LOG_FILEPATH.'/php-error.log');
 
 	// ライブラリのディレクトリをinclude_pathに追加
 	$includes = array(INSTALL_PATH.'/classes', INSTALL_PATH.'/libs');

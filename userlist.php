@@ -28,12 +28,13 @@
 					{
 						$user_name = $POST_DATA['user_name'];
 						$user_pass = $POST_DATA['user_pass'];
-						$status = UtilSQLite::addUserInfo($user_name, $user_pass);
-						if ( $status === TRUE )
-							$SMARTY->assign('inform_msg', "「{$user_name}」の登録に成功しました。");
-						else
+						if (!UtilSQLite::addUserInfo($user_name, $user_pass))
 							$SMARTY->assign('inform_msg', "「{$user_name}」の登録に失敗しました。");
+						else
+							$SMARTY->assign('inform_msg', "「{$user_name}」の登録に成功しました。");
 					}
+					else
+						$SMARTY->assign('inform_msg', 'ユーザ情報を正しく設定してください。');
 					break;
 
 				// 削除確認
@@ -54,11 +55,10 @@
 					if (isset($GET_DATA['sid']) && $GET_DATA['sid'] != '')
 					{
 						$user_name = $USER_LIST[$GET_DATA['sid']]['user_name'];
-						$status = UtilSQLite::delUserInfo($GET_DATA['sid']);
-						if ( $status === TRUE )
-							$SMARTY->assign('inform_msg', "「{$user_name}」の削除に成功しました。");
-						else
+						if (!UtilSQLite::delUserInfo($GET_DATA['sid']))
 							$SMARTY->assign('inform_msg', "「{$user_name}」の削除に失敗しました。");
+						else
+							$SMARTY->assign('inform_msg', "「{$user_name}」の削除に成功しました。");
 					}
 					break;
 			}
