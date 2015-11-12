@@ -36,7 +36,8 @@
 					else
 						$device_name = $DEV_LIST[$GET_DATA['mac_addr']];
 					UtilLog::writeLog('WOLパケットを送信 Name:'.$device_name.' MAC:'.$GET_DATA['mac_addr'], 'ACCESS');
-					if (!WakeOnLan(WAKE_IP, $GET_DATA['mac_addr']))
+					$ipObj = new UtilIPv4(IP_INFO);
+					if (!WakeOnLan($ipObj->broadcast(), $GET_DATA['mac_addr']))
 						$SMARTY->assign('inform_msg', "「{$device_name}」の起動に失敗しました。");
 					else
 						$SMARTY->assign('inform_msg', "「{$device_name}」の起動に成功しました。");
@@ -91,6 +92,14 @@
 					else
 						$SMARTY->assign('inform_msg', 'ベンダー情報の更新に成功しました。');
 					break;
+
+				// デバイス情報更新
+				case 'update_device':
+					if (!UpdArpInfo(CIDR_INFO))
+						$SMARTY->assign('inform_msg', 'デバイス情報の更新に失敗しました。');
+					else
+						$SMARTY->assign('inform_msg', 'デバイス情報の更新に成功しました。');
+					break;
 			}
 		}
 
@@ -142,8 +151,11 @@
 		$SMARTY->assign('res_data1',    $res_data1);
 		$SMARTY->assign('res_data2',    $res_data2);
 		$SMARTY->assign('sess_data',    $SESS_DATA);
-		$SMARTY->assign('update_param', UtilString::buildQueryString(
+		$SMARTY->assign('upd_ven_param', UtilString::buildQueryString(
 			array('mode' => 'update_vendor', 'mac_addr' => 'dummy')
+		));
+		$SMARTY->assign('upd_dev_param', UtilString::buildQueryString(
+			array('mode' => 'update_device', 'mac_addr' => 'dummy')
 		));
 		$SMARTY->display('menu.html');
 	}

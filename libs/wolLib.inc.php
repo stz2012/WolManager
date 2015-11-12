@@ -31,6 +31,29 @@ function GetArpInfo()
 }
 
 /**
+ * ARP情報更新関数
+ */
+function UpdArpInfo($cidr)
+{
+	$ipObj = new UtilIPv4($cidr);
+	//print "Address: {$ipObj->address()}\n";
+	//print "Netbits: {$ipObj->netbits()}\n";
+	//print "Netmask: {$ipObj->netmask()}\n";
+	//print "Inverse: {$ipObj->inverse()}\n";
+	//print "Network: {$ipObj->network()}\n";
+	//print "Broadcast: {$ipObj->broadcast()}\n";
+	$ip_list = $ipObj->getIpAddrList();
+	foreach ($ip_list as $value)
+	{
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+			exec('ping -n 1 -w 1000 '.$value); // for Windows
+		else
+			exec('/bin/ping -c 1 -w 1 '.$value); // for Linux(debian)
+	}
+	return true;
+}
+
+/**
  * 無視するIPアドレスかどうか
  * @param $ip_addr String - IPアドレス文字列
  * @return bool - 処理結果

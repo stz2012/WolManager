@@ -35,8 +35,8 @@
 	define('SESS_TIMEOUT', '+30 minutes');
 	// JQueryMobileのテーマ
 	define('JQM_DATA_THEME', 'b');
-	// ブロードキャストアドレス
-	define('WAKE_IP', '192.168.0.255');
+	// IPアドレス情報（CIDR形式）
+	define('CIDR_INFO', '192.168.0.1/24');
 
 	// Smartyのインスタンスを作成
 	$SMARTY = new Smarty();
