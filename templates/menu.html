@@ -6,8 +6,9 @@
 		<div id="popup_menu" data-role="popup">
 			<ul data-role="listview" data-inset="true">
 				<li><a href="userlist.php">ユーザ情報管理</a></li>
-				<li><a href="{$smarty.server.SCRIPT_NAME}?{$upd_ven_param}">ベンダー情報更新</a></li>
-				<li><a href="{$smarty.server.SCRIPT_NAME}?{$upd_dev_param}">デバイス情報更新</a></li>
+				<li><a href="{$smarty.server.SCRIPT_NAME}?{$menu_param[0]}">デバイス手動追加</a></li>
+				<li><a href="{$smarty.server.SCRIPT_NAME}?{$menu_param[1]}">デバイス情報更新</a></li>
+				<li><a href="{$smarty.server.SCRIPT_NAME}?{$menu_param[2]}">ベンダー情報更新</a></li>
 			</ul>
 		</div>
 	</div>
@@ -74,6 +75,9 @@
 	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
 		<p id="input_dlog_content">{$input_msg|default:''}</p>
 		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param|default:''}">
+			<label for="mac_addr">MACアドレス：</label>
+			<input type="text" name="mac_addr" value="{$mac_addr|default:''}" {if $mac_addr != ''}readonly{/if} />
+			<label for="device_name">デバイス名：</label>
 			<input type="text" name="device_name" value="" />
 			<fieldset class="ui-grid-a">
 				<div class="ui-block-a"><input type="submit" value="登　録" /></div>
