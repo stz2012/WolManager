@@ -15,7 +15,7 @@
 	// PHPエラーのログ出力を有効化
 	ini_set('log_errors', 1);
 	// PHPエラーログ出力パス
-	ini_set('error_log', LOG_FILEPATH.'/php-error.log');
+	ini_set('error_log', LOG_FILEPATH.'/php_errors.log');
 
 	// ライブラリのディレクトリをinclude_pathに追加
 	$includes = array(INSTALL_PATH.'/classes', INSTALL_PATH.'/libs');
@@ -49,7 +49,9 @@
 	session_regenerate_id();
 
 	// QUERY_STRINGの解析
-	$GET_DATA = UtilString::parseQueryString($_SERVER['QUERY_STRING']);
+	$GET_DATA = array();
+	if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != "")
+		$GET_DATA = UtilString::parseQueryString($_SERVER['QUERY_STRING']);
 	$POST_DATA = UtilString::getSanitizeData($_POST);
 	$SESS_DATA = array();
 	if (isset($_SESSION['login_data']) && $_SESSION['login_data'] != "")

@@ -39,7 +39,7 @@
 	</div>
 	<div class="ui-content" role="main" data-theme="{$smarty.const.JQM_DATA_THEME}">
 		<p id="input_dlog_content">{$input_msg|default:''}</p>
-		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param}">
+		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param|default:''}">
 			<label for="user_name">ログイン名：</label>
 			<input type="text" name="user_name" value="" />
 			<label for="user_pass">パスワード：</label>

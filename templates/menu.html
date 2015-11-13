@@ -76,7 +76,7 @@
 		<p id="input_dlog_content">{$input_msg|default:''}</p>
 		<form method="post" action="{$smarty.server.SCRIPT_NAME}?{$form_param|default:''}">
 			<label for="mac_addr">MACアドレス：</label>
-			<input type="text" name="mac_addr" value="{$mac_addr|default:''}" {if $mac_addr != ''}readonly{/if} />
+			<input type="text" name="mac_addr" value="{$mac_addr|default:''}"{if ($mac_addr|default:'') != ''} readonly{/if} />
 			<label for="device_name">デバイス名：</label>
 			<input type="text" name="device_name" value="" />
 			<fieldset class="ui-grid-a">
