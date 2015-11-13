@@ -255,6 +255,36 @@ SQL_TEXT;
 	}
 
 	/**
+	 * デバイス情報を取得
+	 * @param string $device_name デバイス名
+	 * @return string
+	 */
+	public static function getDeviceInfo($device_name)
+	{
+		$retval = '';
+
+		try
+		{
+			$db_obj = new self();
+			$sql = "SELECT mac_addr FROM wol_device";
+			$sql .= " WHERE device_name = ?";
+			$stmt = $db_obj->db->prepare($sql);
+			$stmt->bindValue(1, $device_name);
+			$stmt->execute();
+			$result = $stmt->fetchColumn();
+			if ($result !== false)
+				$retval = $result;
+			$stmt->closeCursor();
+		}
+		catch (PDOException $e)
+		{
+			UtilLog::writeLog($e->getMessage());
+		}
+
+		return $retval;
+	}
+
+	/**
 	 * デバイス一覧を取得
 	 * @return array
 	 */
