@@ -43,7 +43,7 @@
 						else
 							$device_name = $DEV_LIST[$GET_DATA['mac_addr']];
 						UtilLog::writeLog('WOLパケットを送信 Name:'.$device_name.' MAC:'.$GET_DATA['mac_addr'], 'ACCESS');
-						$ipObj = new UtilIPv4(IP_INFO);
+						$ipObj = new UtilIPv4(CIDR_INFO);
 						if (!WakeOnLan($ipObj->broadcast(), $GET_DATA['mac_addr']))
 							$SMARTY->assign('inform_msg', "「{$device_name}」の起動に失敗しました。");
 						else
