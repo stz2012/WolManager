@@ -1,0 +1,26 @@
+{
+    "name": "stz2012/WolManager",
+    "type": "project",
+    "description": "",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.6",
+        "pear/pear": "*@stable",
+        "smarty/smarty": "*@stable"
+    },
+    "config": {
+        "vendor-dir": "libs"
+    },
+    "autoload": {
+        "classmap": [
+            "classes/"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "chmod 707 db",
+            "chmod 707 log",
+            "chmod 707 templates_c"
+        ]
+    }
+}

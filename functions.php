@@ -18,16 +18,11 @@
 	ini_set('error_log', LOG_FILEPATH.'/php_errors.log');
 
 	// ライブラリのディレクトリをinclude_pathに追加
-	$includes = array(INSTALL_PATH.'/classes', INSTALL_PATH.'/libs');
-	$incPath = implode(PATH_SEPARATOR, $includes);
-	set_include_path(get_include_path() . PATH_SEPARATOR . $incPath);
-	require_once 'Smarty/Smarty.class.php';
+	$incPath = array(INSTALL_PATH.'/classes', INSTALL_PATH.'/libs');
+	set_include_path(implode(PATH_SEPARATOR, $incPath));
+	require_once 'autoload.php';
 	require_once 'wolLib.inc.php';
 	setlocale(LC_ALL, 'ja_JP.UTF-8');
-	spl_autoload_register(function ($className) {
-		$file_name = preg_replace('/[^a-z_A-Z0-9]/u', '', $className) . '.php';
-		require_once $file_name;
-	});
 
 	// 暗号化キー
 	define('CRYPT_KEY', UtilSQLite::getCryptKey());
