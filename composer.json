@@ -18,8 +18,6 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "chmod 707 db",
-            "chmod 707 log",
             "chmod 707 templates_c"
         ]
     }
